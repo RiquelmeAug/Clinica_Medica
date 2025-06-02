@@ -19,5 +19,7 @@ Histórico de Consultas por Paciente
 
 # *Tecnologias
 Linguagem: C#
+
 Interface: Console
+
 Paradigma: POO
