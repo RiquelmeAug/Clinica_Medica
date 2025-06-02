@@ -1,3 +1,4 @@
+# Sistema de Clínica Médica
 
 Sistema simples para gerenciamento de uma clínica médica com as seguintes funcionalidades:
 
