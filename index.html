@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clínica Vida+ Bem-Estar - Inspirado em Unimed</title>
+  <style>
+    :root { /* Definindo variáveis de cor globais */
+      --unimed-green: #00995D; /* Tom de verde similar ao da Unimed */
+      --unimed-orange: #F78F1E; /* Tom de laranja similar */
+      --unimed-dark-gray: #333333;
+      --unimed-light-gray: #f0f0f0;
+      --unimed-text-color: #4A4A4A;
+      --white: #ffffff;
+      --border-color: #dddddd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif; /* Mude para uma fonte mais próxima se souber (ex: 'Helvetica Neue', Helvetica, Arial, sans-serif) */
+      color: var(--unimed-text-color);
+      scroll-behavior: smooth;
+      background-color: var(--white); /* Fundo geral branco */
+    }
+
+    /* Estilos para a Barra de Utilidades Superior */
+    .top-utility-bar {
+      background-color: var(--unimed-light-gray);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+
+    .top-utility-bar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    .top-logo img {
+        display: block; /* Para evitar espaço extra abaixo da imagem */
+    }
+
+    .top-utility-nav a {
+      text-decoration: none;
+      color: var(--unimed-text-color);
+      margin-left: 15px;
+      font-weight: 500;
+    }
+    .top-utility-nav a:hover {
+      color: var(--unimed-green);
+    }
+
+    /* Header Principal */
+    .main-header {
+      background-color: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .main-header .topbar { /* .topbar é o container dentro do .main-header */
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between; /* Alterado para espaçar logo e nav */
+      align-items: center;
+      padding: 0 15px;
+    }
+
+    .main-header .logo {
+      font-size: 28px;
+      color: var(--unimed-green);
+      font-weight: bold;
+      text-decoration: none; /* Caso seja um link */
+    }
+
+    .main-header nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center; /* Alinha verticalmente os itens da nav */
+      justify-content: flex-end; /* Alinha itens da nav à direita */
+      gap: 10px; /* Espaçamento entre itens da nav */
+    }
+
+    .main-header nav a, .main-header .nav-button, .main-header .nav-button-orange { /* Estilo dos links e botões da navegação principal */
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+    }
+    
+    .main-header nav a {
+       color: var(--unimed-text-color);
+    }
+
+    .main-header nav a:hover,
+    .main-header nav a.active {
+      color: var(--unimed-green);
+      border-bottom: 2px solid var(--unimed-green);
+      background-color: transparent;
+    }
+
+    /* Botão Laranja (Ex: Área do Cliente) */
+    .nav-button-orange {
+      background-color: var(--unimed-orange) !important; /* Prioridade */
+      color: var(--white) !important;
+      padding: 10px 20px !important;
+      border: none !important; /* Remove bordas */
+      border-bottom: 2px solid transparent !important; /* Sobrescreve borda de link */
+    }
+    .nav-button-orange:hover {
+      background-color: #e67e22 !important;
+      color: var(--white) !important;
+      border-bottom: 2px solid transparent !important;
+    }
+
+    /* Botões Verdes (.nav-button) */
+    .nav-button {
+      background-color: var(--unimed-green) !important; /* Prioridade */
+      color: var(--white) !important;
+      border: none !important; /* Remove bordas */
+      cursor: pointer;
+      border-bottom: 2px solid transparent !important; /* Sobrescreve borda de link */
+    }
+    .nav-button:hover {
+      background-color: #007A4D !important;
+      color: var(--white) !important;
+      border-bottom: 2px solid transparent !important;
+    }
+    
+    main {
+      flex: 1;
+      /* padding-top: 20px; */ /* Removido, o sticky header já cuida do espaço */
+    }
+
+    /* Hero Section Estilo Unimed */
+    .hero-section-unimed {
+      position: relative;
+      background-color: #e9eff1; /* Cor de fundo similar ao da Unimed */
+      padding: 50px 0; /* Reduzido padding vertical */
+      overflow: hidden;
+      min-height: 400px; /* Reduzido min-height */
+      display: flex;
+      align-items: center;
+    }
+
+   
+    .hero-content { /* Container para o conteúdo do hero */
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px; /* Reduzido gap */
+      max-width: 1100px; /* Largura do conteúdo */
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .hero-text-content {
+      flex-basis: 55%; /* Mais espaço para o texto */
+      color: var(--unimed-text-color);
+    }
+
+    .hero-text-content h2 {
+      font-size: 2.2em; /* Ajustado tamanho */
+      color: var(--unimed-dark-gray); /* Cor mais escura para o título */
+      margin-bottom: 15px;
+      line-height: 1.2;
+      text-align: left;
+      font-weight: bold; /* Título mais forte */
+    }
+
+    .hero-text-content p {
+      font-size: 1.0em; /* Ajustado tamanho */
+      margin-bottom: 25px;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .cta-button.hero-cta {
+      background-color: var(--unimed-green);
+      color: var(--white);
+      padding: 12px 30px;
+      font-size: 1em;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      display: inline-block; /* Para que o padding funcione bem */
+    }
+    .cta-button.hero-cta:hover {
+      background-color: #007A4D;
+    }
+
+    .hero-image-elements {
+      flex-basis: 40%; /* Menos espaço para imagem */
+      text-align: center; /* Centraliza a imagem se for menor */
+    }
+    .hero-image-elements img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px; /* Pequeno arredondamento */
+    }
+
+    .hero-pagination {
+      position: absolute;
+      bottom: 15px; /* Ajustado */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      color: var(--unimed-text-color);
+      font-size: 0.9em;
+      background-color: rgba(255,255,255,0.5); /* Fundo semi-transparente */
+      padding: 5px 10px;
+      border-radius: 3px;
+    }
+    .hero-pagination .slider-line {
+      margin: 0 8px; /* Ajustado */
+    }
+
+    /* Estilos Gerais para seções importadas */
+    .container {
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .section-padding {
+      padding-top: 50px; /* Aumentado padding */
+      padding-bottom: 50px;
+    }
+    
+    section h2 {
+        text-align: center;
+        margin-bottom: 35px; /* Aumentado margin */
+        font-size: 2.2em; /* Aumentado font-size */
+        color: var(--unimed-dark-gray); /* Cor consistente para títulos de seção */
+        font-weight: bold;
+    }
+    section h3 {
+        margin-top: 25px; /* Aumentado margin */
+        margin-bottom: 15px;
+        font-size: 1.6em; /* Aumentado font-size */
+        color: var(--unimed-green); /* Cor verde para subtítulos */
+        font-weight: bold;
+    }
+    article p, .servico-detalhe p, .dados-contato p, .formulario-pre-agendamento p, .opcao p {
+        line-height: 1.7; /* Melhorado line-height */
+        margin-bottom: 18px; /* Aumentado margin */
+        font-size: 1em; /* Tamanho de fonte padrão */
+    }
+
+    .cta-button { /* Estilo base para botões de ação */
+        display: inline-block;
+        background-color: var(--unimed-green);
+        color: var(--white) !important;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+    }
+    .cta-button:hover {
+        background-color: #007A4D;
+    }
+
+    /* Grid para serviços preview */
+    .servicos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px; /* Aumentado gap */
+        text-align: center;
+    }
+    .servico-item {
+        background-color: var(--white);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.07); /* Sombra suave */
+        transition: transform 0.3s ease;
+    }
+    .servico-item:hover {
+        transform: translateY(-5px); /* Efeito de levantar no hover */
+    }
+    .servico-item img.servico-icon {
+        max-width: 70px; /* Ajustado */
+        margin-bottom: 15px;
+    }
+    .servico-item h3 {
+        font-size: 1.3em; /* Ajustado */
+    }
+
+    /* Team profiles */
+    .perfil-medico {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--white);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .perfil-medico img.perfil-foto {
+        max-width: 120px;
+        border-radius: 50%;
+        margin: 0 auto 15px auto; /* Centralizado */
+        display: block;
+        border: 3px solid var(--unimed-light-gray);
+    }
+    .perfil-medico h4 {
+        text-align: center;
+        color: var(--unimed-dark-gray);
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+     .perfil-medico p em {
+        display: block;
+        text-align: center;
+        font-style: italic;
+        color: #777;
+        margin-bottom: 10px;
+        font-size: 0.95em;
+    }
+
+    /* Forms styling (melhorado) */
+    form div {
+        margin-bottom: 18px;
+    }
+    form label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        font-size: 0.95em;
+        color: var(--unimed-dark-gray);
+    }
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="tel"],
+    form input[type="date"],
+    form textarea,
+    form select {
+        width: 100%;
+        padding: 12px; /* Aumentado padding */
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 1em;
+        background-color: #fdfdfd;
+    }
+    form input[type="text"]:focus,
+    form input[type="email"]:focus,
+    form input[type="tel"]:focus,
+    form input[type="date"]:focus,
+    form textarea:focus,
+    form select:focus {
+        border-color: var(--unimed-green);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 153, 93, 0.2);
+    }
+    form textarea {
+        min-height: 120px;
+    }
+    
+    .contato-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+    .dados-contato, .formulario-contato {
+        flex: 1;
+        min-width: 300px; /* Ajustado para melhor quebra */
+    }
+    .mapa-container {
+        margin-top:30px;
+    }
+    .mapa-container iframe {
+        border-radius: 8px; /* Arredondado */
+    }
+
+    .opcoes-agendamento {
+        display: grid; /* Usando grid para melhor alinhamento */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .opcoes-agendamento .opcao {
+        flex: 1; /* Mantido para compatibilidade se não for grid */
+        min-width: 250px;
+        padding: 20px;
+        background-color: var(--unimed-light-gray);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+    }
+    .opcoes-agendamento .opcao h3 {
+        margin-top: 0; /* Remove margin-top para h3 dentro de .opcao */
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px; /* Aumentado padding */
+      background-color: var(--unimed-dark-gray); /* Fundo escuro para o footer */
+      color: var(--unimed-light-gray); /* Texto claro */
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    footer p {
+        margin-bottom: 8px; /* Espaçamento entre parágrafos no footer */
+    }
+    footer a {
+        color: var(--white); /* Links brancos no footer */
+        text-decoration: underline;
+    }
+    footer a:hover {
+        color: var(--unimed-green);
+    }
+
+  </style>
+    <header class="main-header">
+    <div class="topbar">
+      <a href="#inicio" class="logo"></a> <nav>
+        <img src="https://yata-apix-a147b678-81d4-4172-b1cd-e432a68fb4b9.s3-object.locaweb.com.br/dbc48ee6c6ed4ad48717557988a5c0fd.png" alt="Logo Empresa Superior" style="height: 80px ;">
+        <a href="#inicio" class="active">Início</a>
+        <a href="#sobre">Sobre Nós</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#nossa-equipe-detalhe">Médicos</a>
+        <a href="#agendamento">Agendamento</a>
+        <a href="#contato">Contato</a>
+        <a href="#" class="nav-button-orange">Área do Cliente</a>
+        </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section-unimed">
+      <div class="hero-background-image">
+        </div>
+      <div class="hero-content">
+        <div class="hero-text-content">
+          <h2>Sua Saúde e Bem-Estar em Primeiro Lugar.</h2> <p>Oferecemos atendimento médico de excelência com foco em cuidado humanizado e tecnologia avançada para você e sua família.</p>
+          <a href="#agendamento" class="cta-button hero-cta">Agende sua Consulta</a>
+        </div>
+        <div class="hero-image-elements">
+          <img src="https://emprendeconhuevos.com/wp-content/uploads/2020/09/unnamed-4-8-1080x661-2.jpg" alt="Clínica Moderna e Acolhedora">
+        </div>
+      </div>
+      <div class="hero-pagination">
+        
+    </section>
+
+    <section id="inicio" class="section-padding"> <div class="container">
+            </div>
+
+        <div id="nossos-servicos-preview" class="container section-padding">
+            <h2>Nossos Principais Serviços</h2>
+            <div class="servicos-grid">
+                <div class="servico-item">
+                    <img src="https://static.vecteezy.com/ti/vetor-gratis/p1/2208022-general-medico-medico-rgb-color-icon-vetor.jpg" alt="Clínica Geral" class="servico-icon"  width="70" height="100">
+                    <h3>Clínica Geral</h3>
+                    <p>Atendimento primário completo para todas as idades.</p>
+                </div>
+                <div class="servico-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3467/3467800.png" alt="Cardiologia" class="servico-icon" width="70" height="100">
+                    <h3>Cardiologia</h3>
+                    <p>Cuidado especializado e moderno para o seu coração.</p>
+                </div>
+                <div class="servico-item">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3461/3461589.png" alt="Pediatria" class="servico-icon" width="70" height="100">
+                    <h3>Pediatria</h3>
+                    <p>Saúde e bem-estar para crianças e adolescentes.</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 30px;"><a href="#servicos" class="cta-button">Veja todos os serviços</a></p>
+        </div>
+
+        <div id="sobre-preview" class="container section-padding" style="background-color: var(--unimed-light-gray);">
+            <h2>Conheça Nossa Clínica</h2>
+            <p style="text-align:center; max-width: 800px; margin-left:auto; margin-right:auto;">Fundada em 1989, a Clínica Vida+ tem o compromisso de oferecer serviços médicos de alta qualidade, com foco no atendimento humanizado e na busca constante por inovação para o bem-estar de nossos pacientes. Contamos com uma equipe de profissionais experientes e dedicados.</p>
+            <p style="text-align:center; margin-top:20px;"><a href="#sobre" class="cta-button">Saiba mais sobre nós</a></p>
+        </div>
+    </section>
+
+    <section id="sobre" class="section-padding">
+        <div class="container">
+            <h2>Sobre a Clínica Vida+</h2>
+            <article>
+                <h3>Nossa História</h3>
+                <p>Bem-vindo à Clínica Vida+, o seu novo centro de referência em saúde e bem-estar em Betim!
+                Localizada estrategicamente no coração na Região metropolitana de Belo horizonte,
+                nossa clínica foi concebida para oferecer um atendimento médico de alta qualidade,
+                 humanizado e acessível a toda a comunidade. Acreditamos que a saúde é o bem mais precioso e,
+                por isso, dedicamos nossos esforços para proporcionar uma experiência completa e satisfatória a cada paciente.</p>
+
+                <h3>Missão</h3>
+                <p>Promover a saúde e o bem-estar dos nossos pacientes através de um atendimento médico qualificado, ético e humanizado,
+                     utilizando conhecimento atualizado e tecnologia de ponta, com foco na prevenção, diagnóstico preciso e tratamento eficaz.</p>
+
+                <h3>Visão</h3>
+                <p>Ser uma clínica de referência em Betim/MG pela qualidade dos serviços prestados, inovação tecnológica e pelo atendimento humanizado, contribuindo ativamente para a saúde e qualidade de vida da comunidade.</p>
+
+                <h3>Valores</h3>
+                <ul>
+                    <li>Compromisso com o Paciente</li>
+                    <br>
+                    <li>Ética Profissional</li>
+                    <br>
+                    <li>Excelência no Atendimento</li>
+                    <br>
+                    <li>Humanização e Empatia</li>
+                    <br>
+                    <li>Inovação Contínua</li>
+                    <br>
+                    <li>Respeito e Transparência</li>
+                </ul>
+            </article>
+
+            <article id="nossa-equipe-detalhe" class="section-padding">
+                <h2>Nossa Equipe</h2> <p style="text-align:center;">Contamos com uma equipe de médicos especialistas e profissionais de saúde altamente qualificados e dedicados a cuidar de você.</p>
+                <div class="servicos-grid"> <div class="perfil-medico servico-item"> 
+                        <h4>Dr. Lucas Jardim</h4>
+                        <p><em>Especialidade (Cardiologista)</em></p>
+                    </div>
+                    <div class="perfil-medico servico-item">
+                        
+                        <h4>Dr. Riquelme Oliveira</h4>
+                        <p><em>Especialidade (Pediatra)</em></p>
+                       
+                    </div>
+                    <div class="perfil-medico servico-item">
+                    
+                        <h4>Dr.Henrique Resende</h4>
+                        <p><em>Especialidade (Clínico Geral)</em></p>
+
+
+                        
+                    </div>
+                     <div class="perfil-medico servico-item">
+                    
+                        <h4>Dr.Rafael Gomes</h4>
+                        <p><em>Especialidade (Dermatologia)</em></p>
+
+                        
+                        
+                    </div>
+                    <div class="perfil-medico servico-item">
+                    
+                        <h4>Dr.Gabriel Martins </h4>
+                        <p><em>Especialidade (Ginecologia)</em></p>
+
+                        
+                        
+                    </div>
+                    
+                    
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="servicos" class="section-padding" style="background-color: var(--unimed-light-gray);">
+        <div class="container">
+            <h2>Nossos Serviços e Especialidades</h2>
+            <p style="text-align:center; max-width: 800px; margin-left:auto; margin-right:auto;">Oferecemos uma ampla gama de serviços médicos para atender às suas necessidades de saúde. Conheça nossas especialidades:</p>
+            <br>
+            <div class="servicos-grid"> <div class="servico-detalhe servico-item"> <h3>Clínica Geral</h3>
+                    <p>Visão integral do organismo humano, apto a tratar diversas doenças e encaminhar a especialistas. Consultas, check-ups, acompanhamento de doenças crônicas.</p>
+                </div>
+                <div class="servico-detalhe servico-item">
+                    <h3>Cardiologia</h3>
+                    <p>Diagnóstico e tratamento das doenças do coração e sistema circulatório. Consultas, ECG, MAPA, Holter, Teste Ergométrico.</p>
+                </div>
+                <div class="servico-detalhe servico-item">
+                    <h3>Pediatria</h3>
+                    <p>Acompanhamento infantil, orientação sobre aleitamento, vacinação, tratamento de doenças comuns na infância e puericultura.</p>
+                </div>
+                <div class="servico-detalhe servico-item">
+                    <h3>Ginecologia e Obstetrícia</h3>
+                    <p>Cuidado integral da saúde da mulher, exames preventivos, pré-natal, parto, tratamento de doenças ginecológicas, planejamento familiar.</p>
+                </div>
+                <div class="servico-detalhe servico-item">
+                    <h3>Dermatologia</h3>
+                    <p>Diagnóstico e tratamento de doenças da pele, cabelos e unhas, além de procedimentos estéticos e acompanhamento de condições crônicas.</p>
+                </div>
+                <div class="servico-detalhe servico-item">
+                    <h3>Exames Laboratoriais</h3>
+                    <p>Coleta e análise de diversos tipos de exames para auxiliar no diagnóstico e acompanhamento de tratamentos com rapidez e precisão.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="section-padding">
+        <div class="container">
+            <h2>Entre em Contato Conosco</h2>
+            <p style="text-align:center;">Estamos à disposição para esclarecer suas dúvidas e agendar sua consulta.</p>
+
+            <div class="contato-wrapper">
+                <div class="dados-contato">
+                    <h3>Nossos Dados</h3>
+                    <p><strong>Endereço:</strong><br>
+                    Av. Juiz Marco Túlio Isaac, 3400 - Betim Industrial, Betim - MG, 32671-150<br>
+                    Betim, Minas Gerais </p>
+                    <p><strong>Telefone:</strong><br>
+                    (31) 4020-4020 (WhatsApp disponível)</p>
+                    <p>(31) 3242-7800 (Fixo)</p>
+                    <p><strong>E-mail:</strong><br>
+                    <a href="mailto:contato@clinicavida+.com.br">contato@clinicavida+.com.br</a></p>
+                    <p><strong>Horário de Funcionamento:</strong><br>
+                    Segunda a Sexta: [08:00h às 18:00h]<br>
+                    Sábado: [08:00h às 12:00h] (Se aplicável)</p>
+                </div>
+
+                <div class="formulario-contato">
+                    <h3>Envie uma Mensagem</h3>
+                    <form action="#" method="POST">
+                        <div>
+                            <label for="nome-contato">Nome Completo:</label>
+                            <input type="text" id="nome-contato" name="nome-contato" required>
+                        </div>
+                        <div>
+                            <label for="email-contato-form">E-mail:</label>
+                            <input type="email" id="email-contato-form" name="email-contato-form" required>
+                        </div>
+                        <div>
+                            <label for="telefone-contato-form">Telefone:</label>
+                            <input type="tel" id="telefone-contato-form" name="telefone-contato-form">
+                        </div>
+                        <div>
+                            <label for="assunto-contato">Assunto:</label>
+                            <input type="text" id="assunto-contato" name="assunto-contato" required>
+                        </div>
+                        <div>
+                            <label for="mensagem-contato">Sua Mensagem:</label>
+                            <textarea id="mensagem-contato" name="mensagem-contato" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="mapa-contato" class="mapa-container">
+                <h3>Nossa Localização</h3>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3750.032629939027!2d-44.19141068508489!3d-19.96511798658419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDU3JzU0LjQiUyA0NMKwMTEnMjEuMiJX!5e0!3m2!1spt-BR!2sbr!4v1622687846739!5m2!1spt-BR!2sbr" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <p style="text-align:center; font-size: 0.9em;"></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="agendamento" class="section-padding" style="background-color: var(--unimed-light-gray);">
+        <div class="container">
+            <h2>Agende sua Consulta</h2>
+            <p style="text-align:center;">Para agendar sua consulta, por favor, entre em contato conosco por um dos canais abaixo ou preencha o formulário de pré-agendamento. Nossa equipe retornará o contato para confirmar a data e horário.</p>
+
+            <div class="opcoes-agendamento">
+                <div class="opcao">
+                    <h3><img src="https://via.placeholder.com/30x30?text=Tel" alt="" style="vertical-align:middle; margin-right:8px;">Telefone / WhatsApp</h3>
+                    <p>Ligue para: <strong>([31]) [989479760]</strong></p>
+                    <p>Ou envie uma mensagem para nosso WhatsApp: <a href="https://wa.me/31989479760" target="_blank"><strong>([31]) [989479760]</strong></a></p>
+                </div>
+                <div class="opcao">
+                     <h3><img src="https://via.placeholder.com/30x30?text=Email" alt="" style="vertical-align:middle; margin-right:8px;">E-mail</h3>
+                    <p>Envie um e-mail para: <a href="mailto:agendamento@clinicavida+.com.br"><strong>agendamento@clinicavida+.com.br</strong></a></p>
+                </div>
+            </div>
+
+            <div class="formulario-pre-agendamento">
+                <h3>Formulário de Pré-Agendamento</h3>
+                <p style="text-align:center;"><em>Este formulário é para solicitação de agendamento. Entraremos em contato para confirmação.</em></p>
+                <form action="#" method="POST" style="max-width: 700px; margin: 0 auto;">
+                    <div>
+                        <label for="nome-paciente">Nome Completo do Paciente:</label>
+                        <input type="text" id="nome-paciente" name="nome-paciente" required>
+                    </div>
+                    <div>
+                        <label for="data-nascimento">Data de Nascimento:</label>
+                        <input type="date" id="data-nascimento" name="data-nascimento" required>
+                    </div>
+                    <div>
+                        <label for="telefone-agendamento">Telefone para Contato (com DDD):</label>
+                        <input type="tel" id="telefone-agendamento" name="telefone-agendamento" required>
+                    </div>
+                    <div>
+                        <label for="email-agendamento">E-mail para Contato:</label>
+                        <input type="email" id="email-agendamento" name="email-agendamento">
+                    </div>
+                    <div>
+                        <label for="especialidade">Especialidade Desejada:</label>
+                        <select id="especialidade" name="especialidade">
+                            <option value="">Selecione (opcional)</option>
+                            <option value="clinica_geral">Clínica Geral</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="pediatria">Pediatria</option>
+                            <option value="ginecologia">Ginecologia</option>
+                            <option value="dermatologia">Dermatologia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="convenio">Possui Convênio? Qual?</label>
+                        <input type="text" id="convenio" name="convenio" placeholder="Ex: Unimed, Amil, Particular">
+                    </div>
+                    <div>
+                        <label for="preferencia-data">Preferência de Data:</label>
+                        <input type="date" id="preferencia-data" name="preferencia-data">
+                    </div>
+                    <div>
+                        <label for="preferencia-horario">Preferência de Horário:</label>
+                        <select id="preferencia-horario" name="preferencia-horario">
+                            <option value="">Selecione</option>
+                            <option value="manha">Manhã (08:00 - 12:00)</option>
+                            <option value="tarde">Tarde (13:00 - 18:00)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="observacoes">Observações Adicionais:</label>
+                        <textarea id="observacoes" name="observacoes" rows="3"></textarea>
+                    </div>
+                    <div style="text-align:center;">
+                        <button type="submit" class="cta-button">Solicitar Agendamento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+        <p>©️ <span id="currentYear"></span> Clínica Vida+. Todos os direitos reservados.</p>
+        <p>Design inspirado para fins de demonstração.</p>
+        <p>Endereço:  [Betim] - [Minas Gerais] | Telefone: ([31]) [4020-4020]</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Script para rolagem suave e active nav link
+    const mainHeaderNavLinks = document.querySelectorAll('.main-header nav a[href^="#"]');
+    const mainHeaderHeight = document.querySelector('.main-header') ? document.querySelector('.main-header').offsetHeight : 0;
+
+
+    mainHeaderNavLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - mainHeaderHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Atualiza classe active ao clicar
+                    mainHeaderNavLinks.forEach(navLink => navLink.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            }
+        });
+    });
+    
+    // Atualiza active nav link no scroll
+    const sections = document.querySelectorAll('main section[id]');
+    window.addEventListener('scroll', () => {
+        let currentSectionId = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - mainHeaderHeight - 50) { // Adicionado um pequeno offset de 50px
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        mainHeaderNavLinks.forEach(a => {
+            a.classList.remove('active');
+            // Verifica se o href do link (removendo o '#') corresponde ao ID da seção atual
+            if (a.getAttribute('href').substring(1) === currentSectionId) {
+                a.classList.add('active');
+            }
+        });
+        
+        // Caso especial para o topo da página ou quando nenhuma seção está "ativa"
+        // Define "Início" como ativo se estiver perto do topo e nenhuma outra seção estiver marcada
+        if (!currentSectionId && pageYOffset < (sections[0] ? sections[0].offsetTop - mainHeaderHeight - 50 : 300) ) {
+             const inicioLink = document.querySelector('.main-header nav a[href="#inicio"]');
+             if(inicioLink) {
+                mainHeaderNavLinks.forEach(navLink => navLink.classList.remove('active'));
+                inicioLink.classList.add('active');
+             }
+        }
+    });
+
+  </script>
+</body>
+</html>
