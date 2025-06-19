@@ -13,7 +13,6 @@ Verificação de Conflitos de Horário
 
 Listagem de Consultas por Médico
 
-Histórico de Consultas por Paciente
 
 
 
