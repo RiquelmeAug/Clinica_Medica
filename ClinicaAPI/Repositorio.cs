@@ -3,10 +3,14 @@ using ClinicaAPI.Models;
 
 namespace ClinicaAPI;
 
-public class Repositorio
+public class Repositorio 
 {
     private const string connectionString = "Data Source=clinica.db";
 
+    //Recebe um objeto da classe Medico
+    //Conecta ao banco
+    //Tenta inserir no banco e trata erros
+    //Se tudo certo insere no banco e não retorna nada
     public static void InserirMedico(Medico medico)
     {
         using var connection = new SqliteConnection(connectionString);
@@ -37,7 +41,9 @@ public class Repositorio
     }
 
 
-
+    //Lista todos os médicos registrados
+    //Faz JOIN entre Pessoa e Medico
+    //Retorna uma lista de objetos Medico preenchidos com os dados do banco
     public static List<Medico> ListarMedicos()
     {
         var lista = new List<Medico>();
@@ -58,8 +64,8 @@ public class Repositorio
             {
                 Id = reader.GetInt32(0),
                 Nome = reader.GetString(1),
-                Genero = new Genero(reader.GetString(2)[0]),         // VO
-                CRM = new CRM(reader.GetString(3)),               // VO
+                Genero = new Genero(reader.GetString(2)[0]),
+                CRM = new CRM(reader.GetString(3)),
                 Especialidade = reader.GetString(4)
             };
             lista.Add(medico);
@@ -67,6 +73,11 @@ public class Repositorio
         return lista;
     }
 
+
+    //Recebe um objeto da classe Cliente
+    //Conecta ao banco
+    //Insere em Pessoa, depois em Cliente
+    //Se tudo certo insere no banco e não retorna nada
     public static void InserirCliente(Cliente cliente)
     {
         // Verificações antes de acessar propriedades
@@ -113,6 +124,9 @@ public class Repositorio
     }
 
 
+    //Lista todos os clientes registrados
+    //Faz JOIN entre Pessoa e Cliente
+    //Retorna uma lista de objetos Cliente preenchidos com os dados do banco
     public static List<Cliente> ListarClientes()
     {
         var lista = new List<Cliente>();
@@ -143,6 +157,11 @@ public class Repositorio
         return lista;
     }
 
+
+    //Recebe um objeto da classe Consulta
+    //Conecta ao banco
+    //Insere no banco a consulta, relacionando médico e cliente por seus IDs
+    //Se tudo certo insere no banco e não retorna nada
     public static void InserirConsulta(Consulta consulta)
     {
         using var connection = new SqliteConnection(connectionString);
@@ -158,6 +177,10 @@ public class Repositorio
         cmd.ExecuteNonQuery();
     }
 
+
+    //Lista todas as consultas marcadas
+    //Faz JOIN para incluir nomes de médico e paciente
+    //Retorna uma lista de objetos Consulta com os campos preenchidos
     public static List<string> ListarConsultas()
     {
         var lista = new List<string>();
@@ -185,41 +208,256 @@ public class Repositorio
     }
 
 
-
-    //TESTE
-    public static void Seed()
+    //Busca todos os médicos cujo nome contenha o texto informado
+    //Ignora maiúsculas/minúsculas
+    //Retorna uma lista com os médicos encontrados ou vazia se nenhum for achado
+    public static List<Medico> BuscarMedicosPorNome(string nome)
     {
-        // Evita duplicações simples
-        if (ListarMedicos().Count > 0) return;
+        var lista = new List<Medico>();
 
-        var m1 = new Medico
+        if (string.IsNullOrWhiteSpace(nome))
+            return lista;
+
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+        SELECT p.Id, p.Nome, p.Genero, m.CRM, m.Especialidade
+        FROM Pessoa p
+        JOIN Medico m ON p.Id = m.PessoaId
+        WHERE LOWER(p.Nome) LIKE '%' || LOWER($nome) || '%';";
+        cmd.Parameters.AddWithValue("$nome", nome);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
         {
-            Nome = "Dra. Carla",
-            Genero = new Genero('F'),
-            CRM = new CRM("123456-SP"),
-            Especialidade = "Cardiologia"
-        };
-        InserirMedico(m1);
+            var medico = new Medico
+            {
+                Id = reader.GetInt32(0),
+                Nome = reader.GetString(1),
+                Genero = new Genero(reader.GetString(2)[0]),
+                CRM = new CRM(reader.GetString(3)),
+                Especialidade = reader.GetString(4)
+            };
+            lista.Add(medico);
+        }
 
-        var c1 = new Cliente
+        return lista;
+    }
+
+
+    //Busca todos os médicos cuja especialidade contenha o texto informado
+    //Ignora maiúsculas/minúsculas
+    //Retorna uma lista com os médicos encontrados ou vazia se nenhum for achado
+    public static List<Medico> BuscarMedicosPorEspecialidade(string especialidade)
+    {
+        var lista = new List<Medico>();
+
+        if (string.IsNullOrWhiteSpace(especialidade))
+            return lista;
+
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+        SELECT p.Id, p.Nome, p.Genero, m.CRM, m.Especialidade
+        FROM Pessoa p
+        JOIN Medico m ON p.Id = m.PessoaId
+        WHERE LOWER(m.Especialidade) LIKE '%' || LOWER($esp) || '%';";
+        cmd.Parameters.AddWithValue("$esp", especialidade);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
         {
-            Nome = "João da Silva",
-            Genero = new Genero('M'),
-            CPF = new CPF("12345678909"),
-            DataNascimento = new DataNascimento(new DateTime(1985, 6, 10))
-        };
-        InserirCliente(c1);
+            var medico = new Medico
+            {
+                Id = reader.GetInt32(0),
+                Nome = reader.GetString(1),
+                Genero = new Genero(reader.GetString(2)[0]),
+                CRM = new CRM(reader.GetString(3)),
+                Especialidade = reader.GetString(4)
+            };
+            lista.Add(medico);
+        }
 
-        var medicos = ListarMedicos();
-        var clientes = ListarClientes();
+        return lista;
+    }
 
-        var consulta = new Consulta
+
+    //Busca todos os clientes cujo nome contenha o texto informado
+    //Ignora maiúsculas/minúsculas
+    //Retorna uma lista com os clientes encontrados ou vazia se nenhum for achado
+    public static List<Cliente> BuscarClientesPorNome(string nome)
+    {
+        var lista = new List<Cliente>();
+
+        if (string.IsNullOrWhiteSpace(nome))
+            return lista;
+
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+            SELECT p.Id, p.Nome, p.Genero, c.CPF, c.DataNascimento
+            FROM Pessoa p
+            JOIN Cliente c ON p.Id = c.PessoaId
+            WHERE LOWER(p.Nome) LIKE '%' || LOWER($nome) || '%';";
+        cmd.Parameters.AddWithValue("$nome", nome);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
         {
-            MedicoId = medicos[0].Id,
-            PacienteId = clientes[0].Id,
-            DataHora = "2025-07-10 14:00"
-        };
-        InserirConsulta(consulta);
+            var cliente = new Cliente
+            {
+                Id = reader.GetInt32(0),
+                Nome = reader.GetString(1),
+                Genero = new Genero(reader.GetString(2)[0]),
+                CPF = new CPF(reader.GetString(3)),
+                DataNascimento = new DataNascimento(DateTime.Parse(reader.GetString(4)))
+            };
+            lista.Add(cliente);
+        }
+
+        return lista;
+    }
+
+
+    //Busca um cliente específico pelo ID da tabela Pessoa
+    //Retorna o cliente se encontrado, ou null caso não exista
+    public static Cliente? BuscarClientePorId(int id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+        SELECT p.Id, p.Nome, p.Genero, c.CPF, c.DataNascimento
+        FROM Pessoa p
+        JOIN Cliente c ON p.Id = c.PessoaId
+        WHERE p.Id = $id;";
+        cmd.Parameters.AddWithValue("$id", id);
+
+        using var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            return new Cliente
+            {
+                Id = reader.GetInt32(0),
+                Nome = reader.GetString(1),
+                Genero = new Genero(reader.GetString(2)[0]),
+                CPF = new CPF(reader.GetString(3)),
+                DataNascimento = new DataNascimento(DateTime.Parse(reader.GetString(4)))
+            };
+        }
+
+        return null;
+    }
+
+
+    //Retorna todas as consultas registradas para um paciente específico
+    //Recebe o ID da pessoa (cliente) e devolve uma lista de objetos Consulta
+    public static List<Consulta> BuscarConsultaPorPaciente(int pacienteId)
+    {
+        var lista = new List<Consulta>();
+
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+            SELECT Id, MedicoId, PacienteId, DataHora
+            FROM Consulta
+            WHERE PacienteId = $id;";
+        cmd.Parameters.AddWithValue("$id", pacienteId);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            var consulta = new Consulta
+            {
+                Id = reader.GetInt32(0),
+                MedicoId = reader.GetInt32(1),
+                PacienteId = reader.GetInt32(2),
+                DataHora = reader.GetString(3)
+            };
+            lista.Add(consulta);
+        }
+
+        return lista;
+    }
+
+
+    //Retorna todas as consultas associadas a um médico específico
+    //Recebe o ID do médico (PessoaId) e devolve uma lista de objetos Consulta
+    public static List<Consulta> BuscarConsultaPorMedico(int medicoId)
+    {
+        var lista = new List<Consulta>();
+
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+        SELECT Id, MedicoId, PacienteId, DataHora
+        FROM Consulta
+        WHERE MedicoId = $id;";
+        cmd.Parameters.AddWithValue("$id", medicoId);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            var consulta = new Consulta
+            {
+                Id = reader.GetInt32(0),
+                MedicoId = reader.GetInt32(1),
+                PacienteId = reader.GetInt32(2),
+                DataHora = reader.GetString(3)
+            };
+            lista.Add(consulta);
+        }
+
+        return lista;
+    }
+
+
+    //Remove uma consulta do banco com base no ID da consulta
+    //Não retorna nada, apenas executa o DELETE
+    public static void CancelarConsulta(int id)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = "DELETE FROM Consulta WHERE Id = $id;";
+        cmd.Parameters.AddWithValue("$id", id);
+
+        cmd.ExecuteNonQuery();
+    }
+
+
+    //Verifica se uma consulta já existe com médico, paciente e horário exatos
+    //Retorna true se existir (evita duplicações), false se for nova
+    public static bool VerificarSeConsultaExiste(int medicoId, int pacienteId, string dataHora)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+        SELECT COUNT(*)
+        FROM Consulta
+        WHERE MedicoId = $medico
+          AND PacienteId = $paciente
+          AND DataHora = $dataHora;";
+        cmd.Parameters.AddWithValue("$medico", medicoId);
+        cmd.Parameters.AddWithValue("$paciente", pacienteId);
+        cmd.Parameters.AddWithValue("$dataHora", dataHora);
+
+        var result = cmd.ExecuteScalar();
+        return Convert.ToInt32(result) > 0;
     }
 
 }

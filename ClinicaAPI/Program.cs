@@ -42,7 +42,7 @@ app.MapGet("/weatherforecast", () =>
 
 Database.Inicializar();
 
-Console.WriteLine("Inserindo médicos...");
+Console.WriteLine("Inserindo médicos");
 Repositorio.InserirMedico(new Medico
 {
     Nome = "Dr. André Silva",
