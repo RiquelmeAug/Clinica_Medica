@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicaVida+ - Cadastro</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5; /* Light grey background for the overall page */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .register-container {
+            background-color: rgba(0, 128, 0, 0.9); /* Darker green background with some transparency */
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-box {
+            background-color: #008000; /* A slightly lighter green for the box itself */
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px; /* Slightly wider for more fields */
+            color: white;
+        }
+
+        .register-box h1 {
+            font-size: 2.2em; /* Slightly smaller for 'Cadastro' */
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #e0ffe0; /* Lighter green for labels */
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="email"],
+        .input-group input[type="password"] {
+            width: calc(100% - 20px); /* Account for padding */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .btn-register {
+            background-color: #4CAF50; /* A brighter green for the button */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px; /* Space above button */
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background-color: #45a049;
+        }
+
+        .back-to-login {
+            margin-top: 25px;
+            font-size: 0.9em;
+        }
+
+        .back-to-login a {
+            color: #e0ffe0;
+            text-decoration: none;
+        }
+
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 0.75em;
+            color: #a0ffa0; /* Even lighter green for footer text */
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <h1>ClinicaVida+ - Cadastro</h1>
+            <form action="#" method="POST">
+                <div class="input-group">
+                    <label for="fullName">Nome Completo</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Seu nome completo" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="username">CPF</label>
+                    <input type="text" id="username" name="username" placeholder="CPF">
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="Crie sua senha" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">confirmar senha</label>
+                    <input type="password" id="confirmPassword" name="ConfirmarPassword" placeholder="Confirmar Senha" required>
+                </div>
+
+                <button type="submit" class="btn-register">CADASTRAR</button>
+            </form>
+            <div class="back-to-login">
+                <p>Já tem uma conta? <a href="login_page.html">Fazer Login</a></p>
+            </div>
+            <div class="footer-text">
+                <p>ClinicaVida+ - Copyright &copy; 2025 Todos os direitos reservados</p>
+                <p>v4.00.39</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
